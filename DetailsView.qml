@@ -14,8 +14,8 @@ FocusScope {
     signal cancel
 
     // Key handling. In addition, pressing left/right also moves to the prev/next collection.
-    Keys.onLeftPressed: api.collectionList.decrementIndex()
-    Keys.onRightPressed: api.collectionList.incrementIndex()
+    Keys.onLeftPressed: api.collections.decrementIndex()
+    Keys.onRightPressed: api.collections.incrementIndex()
     Keys.onPressed: {
         if (event.isAutoRepeat)
             return;
@@ -37,12 +37,12 @@ FocusScope {
         }
         if (api.keys.isNextPage(event.key)) {
             event.accepted = true;
-            api.collectionList.incrementIndex();
+            api.collections.incrementIndex();
             return;
         }
         if (api.keys.isPrevPage(event.key)) {
             event.accepted = true;
-            api.collectionList.decrementIndex();
+            api.collections.decrementIndex();
             return;
         }
     }
@@ -70,12 +70,12 @@ FocusScope {
             fillMode: Image.PreserveAspectFit
             horizontalAlignment: Image.AlignLeft
 
-            source: "logo/%1.svg".arg(api.collectionList.current.shortName)
+            source: "logo/%1.svg".arg(api.collections.current.shortName)
             asynchronous: true
         }
 
         Text {
-            text: api.collectionList.current.name
+            text: api.collections.current.name
             wrapMode: Text.WordWrap
             font.capitalization: Font.AllUppercase
             font.family: "Open Sans"
@@ -143,7 +143,7 @@ FocusScope {
             anchors {
                 top: gameLabels.top
                 left: gameLabels.right; leftMargin: content.paddingH
-                right: gameList.left; rightMargin: content.paddingH
+                right: games.left; rightMargin: content.paddingH
             }
 
             // 'width' is set so if the text is too long it will be cut. I also use some
@@ -163,7 +163,7 @@ FocusScope {
             anchors {
                 top: boxart.bottom; topMargin: content.paddingV
                 left: boxart.left
-                right: gameList.left; rightMargin: content.paddingH
+                right: games.left; rightMargin: content.paddingH
                 bottom: parent.bottom; bottomMargin: content.paddingV
             }
 
@@ -173,7 +173,7 @@ FocusScope {
         }
 
         ListView {
-            id: gameList
+            id: games
             width: parent.width * 0.35
             anchors {
                 top: parent.top; topMargin: content.paddingV
@@ -184,7 +184,7 @@ FocusScope {
 
             focus: true
 
-            model: api.currentCollection.gameList.model
+            model: api.currentCollection.games.model
             delegate: Rectangle {
                 readonly property bool selected: ListView.isCurrentItem
                 readonly property color clrDark: "#393a3b"
@@ -213,8 +213,8 @@ FocusScope {
                 }
             }
 
-            currentIndex: api.currentCollection.gameList.index
-            onCurrentIndexChanged: api.currentCollection.gameList.index = currentIndex
+            currentIndex: api.currentCollection.games.index
+            onCurrentIndexChanged: api.currentCollection.games.index = currentIndex
 
             highlightRangeMode: ListView.ApplyRange
             highlightMoveDuration: 0

@@ -24,11 +24,11 @@ FocusScope {
         anchors.fill: parent
         itemWidth: width
 
-        model: api.collectionList.model
+        model: api.collections.model
         delegate: bgAxisItem
 
-        currentIndex: api.collectionList.index
-        onCurrentIndexChanged: api.collectionList.index = currentIndex
+        currentIndex: api.collections.index
+        onCurrentIndexChanged: api.collections.index = currentIndex
         highlightMoveDuration: 500 // it's moving a little bit slower than the main bar
     }
     Component {
@@ -78,13 +78,13 @@ FocusScope {
             anchors.fill: parent
             itemWidth: vpx(480)
 
-            model: api.collectionList.model
+            model: api.collections.model
             delegate: CollectionLogo { shortName: modelData.shortName }
 
             focus: true
-            currentIndex: api.collectionList.index
+            currentIndex: api.collections.index
             Component.onCompleted: positionViewAtIndex(currentIndex, PathView.SnapPosition) // workaround for some positioning issues; I should fix this later
-            onCurrentIndexChanged: api.collectionList.index = currentIndex
+            onCurrentIndexChanged: api.collections.index = currentIndex
             Keys.onPressed: {
                 if (event.isAutoRepeat)
                     return;
@@ -119,7 +119,7 @@ FocusScope {
         Text {
             id: label
             anchors.centerIn: parent
-            text: "%1 GAMES AVAILABLE".arg(api.collectionList.current.gameList.count)
+            text: "%1 GAMES AVAILABLE".arg(api.collections.current.games.count)
             color: "#333"
             font.pixelSize: vpx(25)
             font.family: "Open Sans"
