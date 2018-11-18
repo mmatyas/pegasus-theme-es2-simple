@@ -14,7 +14,7 @@ PathView {
     Keys.onLeftPressed: decrementCurrentIndex()
     Keys.onRightPressed: incrementCurrentIndex()
     Keys.onPressed: {
-        if (api.keys.isAccept(event.key)) {
+        if (api.keys.isAccept(event)) {
             event.accepted = true;
             itemSelected();
         }

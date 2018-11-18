@@ -89,11 +89,11 @@ FocusScope {
                 if (event.isAutoRepeat)
                     return;
 
-                if (api.keys.isNextPage(event.key)) {
+                if (api.keys.isNextPage(event)) {
                     event.accepted = true;
                     incrementCurrentIndex();
                 }
-                else if (api.keys.isPrevPage(event.key)) {
+                else if (api.keys.isPrevPage(event)) {
                     event.accepted = true;
                     decrementCurrentIndex();
                 }

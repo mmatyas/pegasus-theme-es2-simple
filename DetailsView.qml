@@ -20,27 +20,27 @@ FocusScope {
         if (event.isAutoRepeat)
             return;
 
-        if (api.keys.isAccept(event.key)) {
+        if (api.keys.isAccept(event)) {
             event.accepted = true;
             api.currentGame.launch();
             return;
         }
-        if (api.keys.isCancel(event.key)) {
+        if (api.keys.isCancel(event)) {
             event.accepted = true;
             cancel();
             return;
         }
-        if (api.keys.isAccept(event.key)) {
+        if (api.keys.isAccept(event)) {
             event.accepted = true;
             api.currentGame.launch();
             return;
         }
-        if (api.keys.isNextPage(event.key)) {
+        if (api.keys.isNextPage(event)) {
             event.accepted = true;
             api.collections.incrementIndex();
             return;
         }
-        if (api.keys.isPrevPage(event.key)) {
+        if (api.keys.isPrevPage(event)) {
             event.accepted = true;
             api.collections.decrementIndex();
             return;
