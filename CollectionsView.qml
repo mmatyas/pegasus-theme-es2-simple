@@ -16,6 +16,20 @@ FocusScope {
 
     signal collectionSelected
 
+    // A shortcut for the currently selected collection. It will be used
+    // by the Details view too, to show the collection's logo.
+    readonly property var currentCollection: logoAxis.model.get(logoAxis.currentIndex)
+
+    // These functions can be called by other elements of the theme if the collection
+    // has to be changed manually. See the connection between the Collection and
+    // Details views in the main theme file.
+    function selectNext() {
+        logoAxis.incrementCurrentIndex();
+    }
+    function selectPrev() {
+        logoAxis.decrementCurrentIndex();
+    }
+
     // The carousel of background images. This isn't the item we control with the keys,
     // however it reacts to mouse and so should still update the Index.
     Carousel {
@@ -24,11 +38,10 @@ FocusScope {
         anchors.fill: parent
         itemWidth: width
 
-        model: api.collections.model
+        model: api.collections
         delegate: bgAxisItem
+        currentIndex: logoAxis.currentIndex
 
-        currentIndex: api.collections.index
-        onCurrentIndexChanged: api.collections.index = currentIndex
         highlightMoveDuration: 500 // it's moving a little bit slower than the main bar
     }
     Component {
@@ -78,13 +91,11 @@ FocusScope {
             anchors.fill: parent
             itemWidth: vpx(480)
 
-            model: api.collections.model
+            model: api.collections
             delegate: CollectionLogo { shortName: modelData.shortName }
 
             focus: true
-            currentIndex: api.collections.index
-            Component.onCompleted: positionViewAtIndex(currentIndex, PathView.SnapPosition) // workaround for some positioning issues; I should fix this later
-            onCurrentIndexChanged: api.collections.index = currentIndex
+
             Keys.onPressed: {
                 if (event.isAutoRepeat)
                     return;
@@ -119,7 +130,7 @@ FocusScope {
         Text {
             id: label
             anchors.centerIn: parent
-            text: "%1 GAMES AVAILABLE".arg(api.collections.current.games.count)
+            text: "%1 GAMES AVAILABLE".arg(currentCollection.games.count)
             color: "#333"
             font.pixelSize: vpx(25)
             font.family: "Open Sans"

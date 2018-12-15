@@ -1,9 +1,14 @@
-import QtQuick 2.7 // note the version: Text padding is used below and that vas added in 2.7 as per docs
+import QtQuick 2.7 // note the version: Text padding is used below and that was added in 2.7 as per docs
 import "utils.js" as Utils // some helper functions
 
 // The details "view". Consists of some images, a bunch of textual info and a game list.
 FocusScope {
     id: root
+
+    // This will be set in the main theme file
+    property var currentCollection
+    // A shortcut for the game list's currently selected game
+    readonly property var currentGame: currentCollection.games.get(gameList.currentIndex)
 
     // Nothing particularly interesting, see CollectionsView for more comments
     width: parent.width
@@ -12,17 +17,19 @@ FocusScope {
     visible: y < parent.height
 
     signal cancel
+    signal nextCollection
+    signal prevCollection
 
     // Key handling. In addition, pressing left/right also moves to the prev/next collection.
-    Keys.onLeftPressed: api.collections.decrementIndex()
-    Keys.onRightPressed: api.collections.incrementIndex()
+    Keys.onLeftPressed: prevCollection()
+    Keys.onRightPressed: nextCollection()
     Keys.onPressed: {
         if (event.isAutoRepeat)
             return;
 
         if (api.keys.isAccept(event)) {
             event.accepted = true;
-            api.currentGame.launch();
+            currentGame.launch();
             return;
         }
         if (api.keys.isCancel(event)) {
@@ -30,19 +37,14 @@ FocusScope {
             cancel();
             return;
         }
-        if (api.keys.isAccept(event)) {
-            event.accepted = true;
-            api.currentGame.launch();
-            return;
-        }
         if (api.keys.isNextPage(event)) {
             event.accepted = true;
-            api.collections.incrementIndex();
+            nextCollection();
             return;
         }
         if (api.keys.isPrevPage(event)) {
             event.accepted = true;
-            api.collections.decrementIndex();
+            prevCollection();
             return;
         }
     }
@@ -70,12 +72,12 @@ FocusScope {
             fillMode: Image.PreserveAspectFit
             horizontalAlignment: Image.AlignLeft
 
-            source: "logo/%1.svg".arg(api.collections.current.shortName)
+            source: "logo/%1.svg".arg(currentCollection.shortName)
             asynchronous: true
         }
 
         Text {
-            text: api.collections.current.name
+            text: currentCollection.name
             wrapMode: Text.WordWrap
             font.capitalization: Font.AllUppercase
             font.family: "Open Sans"
@@ -113,7 +115,7 @@ FocusScope {
             }
 
             asynchronous: true
-            source: api.currentGame.assets.boxFront || api.currentGame.assets.logo
+            source: currentGame.assets.boxFront || currentGame.assets.logo
             sourceSize { width: 256; height: 256 } // optimization (max size)
             fillMode: Image.PreserveAspectFit
             horizontalAlignment: Image.AlignLeft
@@ -143,19 +145,19 @@ FocusScope {
             anchors {
                 top: gameLabels.top
                 left: gameLabels.right; leftMargin: content.paddingH
-                right: games.left; rightMargin: content.paddingH
+                right: gameList.left; rightMargin: content.paddingH
             }
 
             // 'width' is set so if the text is too long it will be cut. I also use some
             // JavaScript code to make some text pretty.
-            RatingBar { percentage: api.currentGame.rating }
-            GameInfoText { width: parent.width; text: Utils.formatDate(api.currentGame.release) || "unknown" }
-            GameInfoText { width: parent.width; text: api.currentGame.developer || "unknown" }
-            GameInfoText { width: parent.width; text: api.currentGame.publisher || "unknown" }
-            GameInfoText { width: parent.width; text: api.currentGame.genre || "unknown" }
-            GameInfoText { width: parent.width; text: Utils.formatPlayers(api.currentGame.players) }
-            GameInfoText { width: parent.width; text: Utils.formatLastPlayed(api.currentGame.lastPlayed) }
-            GameInfoText { width: parent.width; text: Utils.formatPlayTime(api.currentGame.playTime) }
+            RatingBar { percentage: currentGame.rating }
+            GameInfoText { width: parent.width; text: Utils.formatDate(currentGame.release) || "unknown" }
+            GameInfoText { width: parent.width; text: currentGame.developer || "unknown" }
+            GameInfoText { width: parent.width; text: currentGame.publisher || "unknown" }
+            GameInfoText { width: parent.width; text: currentGame.genre || "unknown" }
+            GameInfoText { width: parent.width; text: Utils.formatPlayers(currentGame.players) }
+            GameInfoText { width: parent.width; text: Utils.formatLastPlayed(currentGame.lastPlayed) }
+            GameInfoText { width: parent.width; text: Utils.formatPlayTime(currentGame.playTime) }
         }
 
         GameInfoText {
@@ -163,17 +165,17 @@ FocusScope {
             anchors {
                 top: boxart.bottom; topMargin: content.paddingV
                 left: boxart.left
-                right: games.left; rightMargin: content.paddingH
+                right: gameList.left; rightMargin: content.paddingH
                 bottom: parent.bottom; bottomMargin: content.paddingV
             }
 
-            text: api.currentGame.description
+            text: currentGame.description
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
         }
 
         ListView {
-            id: games
+            id: gameList
             width: parent.width * 0.35
             anchors {
                 top: parent.top; topMargin: content.paddingV
@@ -184,7 +186,7 @@ FocusScope {
 
             focus: true
 
-            model: api.currentCollection.games.model
+            model: currentCollection.games
             delegate: Rectangle {
                 readonly property bool selected: ListView.isCurrentItem
                 readonly property color clrDark: "#393a3b"
@@ -212,9 +214,6 @@ FocusScope {
                     rightPadding: leftPadding
                 }
             }
-
-            currentIndex: api.currentCollection.games.index
-            onCurrentIndexChanged: api.currentCollection.games.index = currentIndex
 
             highlightRangeMode: ListView.ApplyRange
             highlightMoveDuration: 0

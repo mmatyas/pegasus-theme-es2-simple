@@ -22,7 +22,12 @@ FocusScope {
     DetailsView {
         id: detailsView
         anchors.top: collectionsView.bottom
+
+        currentCollection: collectionsView.currentCollection
+
         onCancel: collectionsView.focus = true
+        onNextCollection: collectionsView.selectNext()
+        onPrevCollection: collectionsView.selectPrev()
     }
 
     // I animate the collection view's bottom anchor to move it to the top of
