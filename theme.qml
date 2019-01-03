@@ -3,6 +3,14 @@ import QtQuick 2.0
 // Welcome! This is the entry point of the theme; it defines two "views"
 // and a way to move (and animate moving) between them.
 FocusScope {
+    // When the theme loads, try to restore the last selected game
+    // and collection. If this is the first time launching this theme, these
+    // values will be undefined, which is why there are zeroes as fallback
+    Component.onCompleted: {
+        collectionsView.currentCollectionIndex = api.memory.get('collectionIndex') || 0;
+        detailsView.currentGameIndex = api.memory.get('gameIndex') || 0;
+    }
+
     // Loading the fonts here makes them usable in the rest of the theme
     // and can be referred to using their name and weight.
     FontLoader { source: "fonts/OPENSANS.TTF" }
@@ -28,6 +36,11 @@ FocusScope {
         onCancel: collectionsView.focus = true
         onNextCollection: collectionsView.selectNext()
         onPrevCollection: collectionsView.selectPrev()
+        onLaunchGame: {
+            api.memory.set('collectionIndex', collectionsView.currentCollectionIndex);
+            api.memory.set('gameIndex', currentGameIndex);
+            currentGame.launch();
+        }
     }
 
     // I animate the collection view's bottom anchor to move it to the top of

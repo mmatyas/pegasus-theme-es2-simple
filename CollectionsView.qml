@@ -16,8 +16,9 @@ FocusScope {
 
     signal collectionSelected
 
-    // A shortcut for the currently selected collection. It will be used
-    // by the Details view too, to show the collection's logo.
+    // Shortcut for the currently selected collection. They will be used
+    // by the Details view too, for example to show the collection's logo.
+    property alias currentCollectionIndex: logoAxis.currentIndex
     readonly property var currentCollection: logoAxis.model.get(logoAxis.currentIndex)
 
     // These functions can be called by other elements of the theme if the collection

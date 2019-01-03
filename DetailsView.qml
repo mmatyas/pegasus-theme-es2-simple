@@ -7,8 +7,9 @@ FocusScope {
 
     // This will be set in the main theme file
     property var currentCollection
-    // A shortcut for the game list's currently selected game
-    readonly property var currentGame: currentCollection.games.get(gameList.currentIndex)
+    // Shortcuts for the game list's currently selected game
+    property alias currentGameIndex: gameList.currentIndex
+    readonly property var currentGame: currentCollection.games.get(currentGameIndex)
 
     // Nothing particularly interesting, see CollectionsView for more comments
     width: parent.width
@@ -19,6 +20,7 @@ FocusScope {
     signal cancel
     signal nextCollection
     signal prevCollection
+    signal launchGame
 
     // Key handling. In addition, pressing left/right also moves to the prev/next collection.
     Keys.onLeftPressed: prevCollection()
@@ -29,7 +31,7 @@ FocusScope {
 
         if (api.keys.isAccept(event)) {
             event.accepted = true;
-            currentGame.launch();
+            launchGame();
             return;
         }
         if (api.keys.isCancel(event)) {
