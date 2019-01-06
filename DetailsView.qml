@@ -107,20 +107,28 @@ FocusScope {
         readonly property int paddingH: vpx(30)
         readonly property int paddingV: vpx(40)
 
-        Image {
+        Item {
             id: boxart
 
             height: vpx(218)
+            width: Math.max(vpx(160), Math.min(height * boxartImage.aspectRatio, vpx(320)))
             anchors {
                 top: parent.top; topMargin: content.paddingV
                 left: parent.left; leftMargin: content.paddingH
             }
 
-            asynchronous: true
-            source: currentGame.assets.boxFront || currentGame.assets.logo
-            sourceSize { width: 256; height: 256 } // optimization (max size)
-            fillMode: Image.PreserveAspectFit
-            horizontalAlignment: Image.AlignLeft
+            Image {
+                id: boxartImage
+
+                readonly property double aspectRatio: (implicitWidth / implicitHeight) || 0
+
+                anchors.fill: parent
+                asynchronous: true
+                source: currentGame.assets.boxFront || currentGame.assets.logo
+                sourceSize { width: 256; height: 256 } // optimization (max size)
+                fillMode: Image.PreserveAspectFit
+                horizontalAlignment: Image.AlignLeft
+            }
         }
 
         // While the game details could be a grid, I've separated them to two
