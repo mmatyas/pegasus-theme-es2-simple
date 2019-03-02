@@ -74,7 +74,7 @@ FocusScope {
             fillMode: Image.PreserveAspectFit
             horizontalAlignment: Image.AlignLeft
 
-            source: "logo/%1.svg".arg(currentCollection.shortName)
+            source: currentCollection.shortName ? "logo/%1.svg".arg(currentCollection.shortName) : ""
             asynchronous: true
         }
 

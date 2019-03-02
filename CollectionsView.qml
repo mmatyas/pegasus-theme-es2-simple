@@ -63,7 +63,7 @@ FocusScope {
                 id: realBg
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectCrop // fill the screen without black bars
-                source: "bg/%1_art_blur.png".arg(modelData.shortName)
+                source: modelData.shortName ? "bg/%1_art_blur.png".arg(modelData.shortName) : ""
                 asynchronous: true
             }
         }

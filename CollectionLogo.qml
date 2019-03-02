@@ -19,7 +19,7 @@ Item {
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
 
-        source: "logo/%1.svg".arg(shortName)
+        source: shortName ? "logo/%1.svg".arg(shortName) : ""
         asynchronous: true
         sourceSize { width: 256; height: 256 } // optimization: render SVGs in at most 256x256
 
