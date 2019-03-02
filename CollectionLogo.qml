@@ -3,7 +3,8 @@ import QtQuick 2.0
 // The collection logo on the collection carousel. Just an image that gets scaled
 // and more visible when selected. Also has a fallback text if there's no image.
 Item {
-    property alias shortName: label.text // set on the PathView side
+    property string longName: "" // set on the PathView side
+    property string shortName: "" // set on the PathView side
     readonly property bool selected: PathView.isCurrentItem
 
     width: vpx(480)
@@ -33,6 +34,7 @@ Item {
         color: "#000"
         font.family: "Open Sans"
         font.pixelSize: vpx(50)
+        text: shortName || longName
 
         visible: image.status != Image.Ready
 

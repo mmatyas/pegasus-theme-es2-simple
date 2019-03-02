@@ -93,7 +93,10 @@ FocusScope {
             itemWidth: vpx(480)
 
             model: api.collections
-            delegate: CollectionLogo { shortName: modelData.shortName }
+            delegate: CollectionLogo {
+                longName: modelData.name
+                shortName: modelData.shortName
+            }
 
             focus: true
 
