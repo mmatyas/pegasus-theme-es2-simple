@@ -124,7 +124,10 @@ FocusScope {
 
                 anchors.fill: parent
                 asynchronous: true
-                source: currentGame.assets.boxFront || currentGame.assets.logo
+                source: currentGame.assets.boxFront ||
+                        currentGame.assets.logo ||
+                        currentGame.assets.screenshot ||
+                        currentGame.assets.marquee
                 sourceSize { width: 256; height: 256 } // optimization (max size)
                 fillMode: Image.PreserveAspectFit
                 horizontalAlignment: Image.AlignLeft
