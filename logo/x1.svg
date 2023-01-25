@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="420" height="132.72" version="1.1" viewBox="0 0 420 132.72" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
- <metadata>
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
  <g transform="translate(-134.12 -2.3804e-6)">
-  <text transform="translate(428.15 129.72)" fill="#ff0000" font-family="ArialMT" font-size="5px">I don’t like bugs!</text>
   <path d="m326.02 59.784-33.528-59.784h92.503zm-18.981-51.264 20.87 37.215 36.713-37.215zm-71.892 124.2h-100.8l63.751-62.555zm-79.957-8.52h65.008l-23.896-40.341z"/>
   <path d="m427.39 0-29.444 30.803h35.777l-52.553 93.393h-33.713l-71.438-124.2h-102.27l77.039 132.72h226.77l76.339-132.72zm-171.7 124.2-67.148-115.68h82.548l66.537 115.68zm216.93 0h-81.678l57.347-101.91h-30.417l13.156-13.763h108.13z"/>
  </g>
